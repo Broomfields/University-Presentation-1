@@ -1,0 +1,62 @@
+@startuml "TSC-SERVER - Storage Layer Component Diagram"
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+' Tags and Styling
+SHOW_PERSON_OUTLINE()
+AddElementTag("backendContainer", $fontColor=$ELEMENT_FONT_COLOR, $bgColor="#335DA5", $shape=EightSidedShape(), $legendText="backend container\neight sided")
+hide empty members
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam nodesep 150
+skinparam ranksep 100
+skinparam Linetype ortho
+
+' left to right direction
+
+title "TSC-SERVER - Storage Layer Component Diagram"
+
+' Define TSC-SERVER as a primary container
+Container_Boundary(c4, "TSC-SERVER Storage Layer", "SQL Server hosting various databases.") {
+
+    ' Define Support Tracker database and views
+    together {
+        SystemDb(supportTrackerDB, "Support Tracker Database", "Primary database for the support tracker application.")
+        Component(stViewSupportTracker, "Support Tracker View", "SQL View", "View in Support Tracker DB that reads from Support Tracker and external database views.")
+    }
+    
+    ' Define sub-views inside Support Tracker database
+    together {
+        Component(stViewSupportManager, "Support Manager View", "SQL View", "View in Support Tracker DB that reads from Support Manager Database.")
+        Component(stViewOrderManager, "Order Manager View", "SQL View", "View in Support Tracker DB that reads from Order Manager Database.")
+        Component(stViewMantis, "Mantis View", "SQL View", "View in Support Tracker DB that reads from Mantis Database.")
+    }
+    ' Define external databases and views
+    together {
+        SystemDb_Ext(supportManagerDB, "Support Manager Database", "Database for the Support Manager tool.")
+        SystemDb_Ext(orderManagerDB, "Order Manager Database", "Database for the Order Manager tool.")
+        SystemDb_Ext(mantisDB, "Mantis Database", "Database for Mantis bug tracking tool.")
+    }
+    
+    ' Relationships between databases and views
+    stViewSupportTracker -down-> stViewSupportManager : Reads from
+    stViewSupportTracker -down-> stViewOrderManager : Reads from
+    stViewSupportTracker -down-> stViewMantis : Reads from
+    
+    stViewSupportTracker -down-> supportTrackerDB : Reads from
+    stViewSupportManager -down-> supportManagerDB : Reads from
+    stViewOrderManager -down-> orderManagerDB : Reads from
+    stViewMantis -down-> mantisDB : Reads from
+}
+
+' External containers and systems
+Container(dalContainer, "Data Access Layer (DAL)", "MFC-Based C++/CLI DLL", "Provides data retrieval and management functionalities.", $tags="backendContainer")
+
+' Interactions between DAL and TSC-SERVER
+dalContainer -right-> supportTrackerDB : Performs CRUD ops
+dalContainer -right-> stViewSupportTracker : Reads data
+
+SHOW_LEGEND()
+
+@enduml

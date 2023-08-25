@@ -1,0 +1,254 @@
+@startuml "Support Tracker - Domain Class Diagram"
+
+
+
+' Styling
+' --------
+
+hide empty members
+
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam nodesep 150
+skinparam ranksep 100
+skinparam linetype ortho
+
+' Applying theme
+!theme crt-amber
+
+
+' Title
+' ------
+
+title Support Tracker - Domain Model Classes 
+
+
+' C++/CLI Classes
+' ----------------
+
+together {
+
+    class ProdigyBuild <<DTO>> {
+        +ID : int 
+        +Name : String^ 
+    }
+
+    class ProdigyVersion <<DTO>> {
+        +ID : int 
+        +Name : String^ 
+    }
+
+    class SupportContract <<DTO>> {
+        +ID : int 
+        +CompanyName : String^ 
+        +SiteLocation : String^ 
+    }
+
+    class TicketStatus <<DTO>> {
+        +ID : Guid^ 
+        +Name : String^ 
+    }
+
+    class AuditActionType <<DTO>> {
+        +ID : Guid^ 
+        +Name : String^ 
+    }
+
+    class EventType <<DTO>> {
+        +ID : Guid^ 
+        +Name : String^ 
+    }
+
+    class ProdigyProgram <<DTO>> {
+        +ID : int 
+        +Name : String^ 
+    }
+
+    class TascompEngineer <<DTO>> {
+        +ID : String^ 
+        +Name : String^ 
+        +Email : String^ 
+    }
+
+    class SiteContact <<DTO>> {
+        +ID : int 
+        +Name : String^ 
+    }
+}
+
+struct TicketAwaitingDetails <<Struct>> {
+    +AwaitingEngineer : TascompEngineer^? 
+    +AwaitingContact : SiteContact^? 
+    +AwaitingReason : String^ 
+}
+
+together {
+    struct TicketDetails <<Struct>> {
+        -Ticket : Ticket^
+
+        +Status : TicketStatus^ 
+        +Contract : SupportContract^ 
+        +Version : ProdigyVersion^ 
+        +Build : ProdigyBuild^ 
+        +PrimaryEngineer : TascompEngineer^ 
+        +PrimaryContact : SiteContact^ 
+        +Overview : String^ 
+        +Notes : String^ 
+        +AwaitingDetails : TicketAwaitingDetails^? 
+        +TicketDuration : TimeSpan^
+        +RelatedPrograms : List<ProdigyProgram^>^
+    }
+
+    struct EntityAuditDetails <<Struct>> {
+        -Ticket : Ticket^
+        
+        +CreatedByEngineer : TascompEngineer^
+        +CreationDate : DateTime^
+        +TicketAge : TimeSpan^
+        +ClosedByEngineer : TascompEngineer?
+        +ClosedDate : DateTime^?
+    }
+
+    struct EventDetails <<Struct>> {
+        -Ticket : Ticket^
+        -Event : Event^
+
+        +Type : EventType^ 
+        +Engineer : TascompEngineer^ 
+        +Contact : SiteContact^ 
+        +Program : ProdigyProgram^? 
+        +Overview : String^ 
+        +Notes : String^ 
+        +Timestamp : DateTime^
+        +Duration : TimeSpan^
+    }
+}
+
+abstract class Entity <<Template>> {
+    {abstract} +ID : Guid^
+    {abstract} +AuditDetails : EntityAuditDetails
+    {abstract} +Deleted : bool 
+
+    == Functions ==
+    #TriggerDelete() : void
+    #TriggerDeletedAuditAction() : void
+}
+
+together {
+    class Ticket <<DTO>> {
+        +Details : TicketDetails 
+        +Events : List<Event^> 
+        +MantisReferences : List<LinkedMantisReference^> 
+        +LinkedFiles : List<LinkedFile^> 
+
+        == Functions ==
+        #LinkFile() : void
+        #TriggerLinkedFileAuditAction() : void
+        #LinkMantisEntry() : void
+        #TriggerLinkMantisEntryAuditAction() : void
+    }
+
+    class Event <<DTO>> {
+        -Ticket : Ticket^ 
+        
+        +Details : EventDetails 
+        +MantisReferences : List<LinkedMantisReference^> 
+        +LinkedFiles : List<LinkedFile^> 
+    }
+
+    class LinkedFile <<DTO>> {
+        +Ticket : Ticket^ 
+        +Event : Event^? 
+        +DisplayName : String^ 
+        +FilePath : String^ 
+        +Notes : String^ 
+    }
+
+    class LinkedMantisReference <<DTO>> {
+        +Ticket : Ticket^
+        +Event : Event^?
+        +MantisReferenceID : String^
+        +Overview : String^
+    }
+}
+
+class Domain <<Static>> {
+    {static} +TascompEngineers : List<TascompEngineer^> 
+    {static} +ProdigyVersions : List<ProdigyVersion^> 
+    {static} +ProdigyBuilds : List<ProdigyBuild^> 
+    {static} +TicketStatuses : List<TicketStatus^> 
+    {static} +EventTypes : List<EventType^> 
+    {static} +AuditActionTypes : List<AuditActionType^> 
+    {static} +ProdigyPrograms : List<ProdigyProgram^>
+}
+
+note right of Domain {
+    The domain contains lists that can be modified, but the objects within them are immutable.
+    These objects act as unique references in memory for any of the entity properties of the same type.  
+}
+
+abstract class AuditAction <<DTO>> {
+  +AuditActionID : Guid^
+  +Engineer : TascompEngineer^
+  +Type : AuditActionType^
+  +TriggerAction : AuditAction^
+  +Timestamp : DateTime^
+}
+
+class AuditActionType <<DTO>> {
+  +AuditActionTypeID : Guid^
+  +Action : String^
+}
+
+' Relationships
+' --------------
+
+Ticket .up.|> Entity : inherits from
+Event .up.|> Entity : inherits from
+LinkedMantisReference .up.|> Entity : inherits from
+LinkedFile .up.|> Entity : inherits from
+
+Entity "1" -down-o "{1}" EntityAuditDetails : contains
+
+Ticket "1" -down-o "{1}" TicketDetails : contains
+
+TicketDetails ||-down-o "{1}" TicketStatus : has status
+TicketDetails ||-down-o "{1}" SupportContract : contains
+TicketDetails ||-down-o "{1}" ProdigyVersion : contains
+TicketDetails ||-down-o "{1}" ProdigyBuild : contains
+TicketDetails ||-down-o "{1}" TascompEngineer : associated with
+TicketDetails ||-down-o "{1}" SiteContact : associated with
+TicketDetails ||-down-o "{0..1}" TicketAwaitingDetails : contains
+
+EntityAuditDetails ||-down-o "{1}" TascompEngineer : associated with
+EntityAuditDetails ||-down-o "{0..1}" TascompEngineer : contains
+
+TicketAwaitingDetails ||-down-o "{0..1}" TascompEngineer : contains
+TicketAwaitingDetails ||-down-o "{0..1}" SiteContact : contains
+
+Ticket "1" -right-o "{*}" Event : contains
+Ticket "1" -right- "{*}" LinkedMantisReference : can have
+Ticket "1" -right- "{*}" LinkedFile : can have
+
+Event "1" -down-o "{1}" EventDetails : contains
+
+EventDetails "1" -down-o "{1}" EventType : has type
+EventDetails "1" -down-o "{1}" TascompEngineer : associated with
+EventDetails "1" -down-o "{1}" SiteContact : associated with
+EventDetails "1" -down-o "{0..1}" ProdigyProgram : associated with
+
+Event "1" -right- "{*}" LinkedFile : can have
+Event "1" -right- "{*}" LinkedMantisReference : can have
+
+Entity -up-> AuditAction : uses
+AuditAction "1" --right- "1" AuditActionType : has
+
+Domain ||-up-o "{0..1}" TascompEngineer : contains
+Domain ||-up-o "{0..1}" ProdigyVersion : contains
+Domain ||-up-o "{0..1}" ProdigyBuild : contains
+Domain ||-up-o "{0..1}" TicketStatus : contains
+Domain ||-up-o "{0..1}" EventType : contains
+Domain ||-up-o "{0..1}" AuditActionType : contains
+
+@enduml

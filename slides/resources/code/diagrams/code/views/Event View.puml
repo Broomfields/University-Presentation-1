@@ -1,0 +1,131 @@
+@startuml "Support Tracker - Event View Class Diagram"
+
+' Styling
+' --------
+
+hide empty members
+
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam linetype ortho
+skinparam nodesep 150
+skinparam ranksep 100
+
+' Applying theme
+!theme crt-amber
+
+
+' Title
+' ------
+
+title Support Tracker - User Interface - Event View
+
+
+' C++/CLI Classes
+' ----------------
+
+class EventView <<UserControl>> {
+    
+    == Events ==
+    #TypeDropDown_SelectedChanged() : System::Void
+    #EngineerDropDown_SelectedChanged() : System::Void
+    #ContactDropDown_SelectedChanged() : System::Void
+    #RelatedProgram_SelectedChanged() : System::Void
+    #RelatedProgram_TextChanged() : System::Void
+    #OverviewText_TextChanged() : System::Void
+    #NotesText_TextChanged() : System::Void
+    #DurationText_TextChanged() : System::Void
+    #TimestampDTPicker_ValueChanged() : System::Void
+    #LinkedFilesButton_Clicked() : System::Void
+    #LinkedReferencesButton_Clicked() : System::Void
+
+    == Controls ==
+    -IDLabel : Label^
+    -TypeDropDown : ComboBox^
+    -EngineerDropDown : ComboBox^
+    -ContactDropDown : ComboBox^
+    -RelatedProgramDropDown : ComboBox^
+    -OverviewText : TextBox^
+    -NotesText : TextBox^
+    -TimestampDTPicker : DateTimePicker^
+    -DurationText : TextBox^
+    -LinkedFilesButton : Button^
+    -LinkedFilesLabel : Label^
+    -LinkedReferencesButton : Button^
+    -LinkedReferencesLabel : Label^
+}
+
+class BaseUserControl <<Template>> {
+    
+    == Properties ==
+
+    == Functions ==
+    {abstract} -InitialiseControls() : void
+
+    == Events ==
+    -Load() : System::Void
+}
+
+note bottom of BaseUserControl {
+    Inherits from System::Windows::Forms::UserControl.
+}
+
+together {
+    class LinkedFilesView <<WindowsForm>> {
+        
+    }
+
+    class MantisReferencesView <<WindowsForm>> {
+        
+    }
+
+    class BaseLinksView <<WindowsForm>> {
+        
+        == Properties ==
+        #ChangesPending : bool
+
+        == Overridden Properties ==
+        #Text : String^
+        
+        == Functions ==
+        #ViewBaseLink() : void
+        #AddBaseLink() : void
+        #RemoveBaseLink() : void
+        
+        == Events ==
+        #BaseLinksView_Load() : System::Void
+        #BaseLinksView_VisibleChanged() : System::Void
+        #BaseLinksGridContext_ItemClicked() : System::Void
+        #ViewBaseLinkButton_Clicked() : System::Void
+        #AddBaseLinkButton_Clicked() : System::Void
+        #RemoveBaseLinkButton_Clicked() : System::Void
+
+        == Controls ==
+        -BaseLinksCountLabel : Label^
+        -BaseLinksGrid : DataGridView^
+        -ViewBaseLinkButton : Button^
+        -AddBaseLinkButton : Button^
+        -RemoveBaseLinkButton : Button^
+        -GridContext : ContextMenuStrip^
+        -ContextViewBaseLink : MenuItem^
+        -ContextRemoveBaseLink : MenuItem^
+    }
+}
+
+' Relationships
+' --------------
+
+MainView "1" *-down- "{1}" EventView : composed of
+
+LinkedFilesView .down.|> BaseLinksView : inherits from
+MantisReferencesView .down.|> BaseLinksView : inherits from
+
+EventView .right.> LinkedFilesView : launches
+EventView .right.> MantisReferencesView : launches
+
+EventView .down.|> BaseUserControl : inherits from
+
+
+
+@enduml

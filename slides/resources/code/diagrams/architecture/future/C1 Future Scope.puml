@@ -1,0 +1,83 @@
+@startuml "Support Tracker - Context (Future Scope) Diagram"
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+SHOW_PERSON_OUTLINE()
+
+' Styling
+hide empty members
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam nodesep 150
+skinparam ranksep 100
+skinparam Linetype ortho
+
+title "Support Tracker - Context (Future Scope) Diagram"
+
+
+' Define actors and their interactions
+Person(seniorLeadership, "Senior Leadership", "Views Support summary and metrics.")
+Person(supportTeam, "Support Team", "Creates and manages support tickets.")
+Person(appTeam, "Applications Team", "Adds their own events (Linking Applications Tracking) to existing tickets.")
+Person(softwareTeam, "Software Team", "Adds their own events (Linking Software Tracking) to existing tickets.")
+Person(hardwareTeam, "Hardware Team", "Adds their own events (Linking Hardware Tracking) to existing tickets.")
+
+' Define the system
+together{
+    System_Boundary(s1, "Support Tracker System") {
+        System(supportTrackerSystem, "Support Tracker System API", "Core libraries that build up the majority of the system.")
+        SystemDb(tscServerDB, "TSC-Server", "MS SQL Server. (Hosts databases for internal tools.)")
+    
+        Container_Boundary(c2, "Support Tracker - Future Front-End") {
+
+            together {
+                System(overviewTool, "Support Tracker Overview Tool", "Internal tool hosted on TSC-Server. Provides an overview of all tickets and related metrics.")
+                System(ticketCreationTool, "Support Tracker Creation Tool", "Internal tool hosted on TSC-Server. Creates a new support ticket.")
+                System(ticketManagementTool, "Support Tracker Management Tool", "Internal tool hosted on TSC-Server. Manages and tracks support ticket's and their events.")
+            }
+        }
+        
+        Container_Boundary(c3, "Support Tracker Future Back-End") {
+            
+            together {
+                System(backendNotificationTool, "Back-End Notification System", "Runs on TSC-Server. Notifies staff about ticket status changes relevant to them by reading the Support Tracker database.")
+                System(backendReportTool, "Back-End Report-Generation System", "Runs on TSC-Server. Generates summary and metrics reports by reading the Support Tracker database.")
+            }
+        }
+
+    }
+}
+
+System_Ext(tascompLibraries, "Tascomp Internal Libraries", "External Libraries. Used by the Support Tracker system.")
+
+
+' Connect actors to the system
+seniorLeadership    -down-> overviewTool
+supportTeam         -down-> ticketCreationTool
+supportTeam         -down-> ticketManagementTool
+
+appTeam         -down-> ticketManagementTool
+softwareTeam    -down-> ticketManagementTool
+hardwareTeam    -down-> ticketManagementTool
+
+overviewTool            -down-> supportTrackerSystem
+ticketCreationTool      -down-> supportTrackerSystem
+ticketManagementTool    -down-> supportTrackerSystem
+backendNotificationTool -right-> supportTrackerSystem
+backendReportTool       -right-> supportTrackerSystem
+
+backendReportTool       -down-> backendNotificationTool
+
+' Connection between Ticket Management Tool and external systems
+supportTrackerSystem -down-> tscServerDB
+supportTrackerSystem -right-> tascompLibraries
+backendNotificationTool -right-> tascompLibraries
+
+' c1 --[hidden]-- c2
+c1 --[hidden]-- c3
+' c2 --[hidden]-- c3
+
+SHOW_LEGEND()
+
+@enduml

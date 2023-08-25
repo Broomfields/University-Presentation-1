@@ -1,0 +1,50 @@
+@startuml "Support Tracker - Data Access Layer Component Diagram"
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+' Tags and Styling
+SHOW_PERSON_OUTLINE()
+AddElementTag("backendContainer", $fontColor=$ELEMENT_FONT_COLOR, $bgColor="#335DA5", $shape=EightSidedShape(), $legendText="backend container\neight sided")
+hide empty members
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam nodesep 150
+skinparam ranksep 100
+skinparam Linetype ortho
+
+title "Support Tracker - Data Access Layer Component Diagram"
+
+' Define the Data Access Layer as a container
+Container_Boundary(c3, "Data Access Layer (DAL)", "MFC-Based C++/CLI DLL that provides data retrieval and management functionalities.") {
+
+    ' Define the primary components
+    Component(dbInteractionComponent, "Database Interaction", "C++/CLI", "Handles direct CRUD operations with SQL Database.")
+    Component(uiContractComponent, "UI Contract", "C++/CLI", "Provides high-level operations for UI data bindings.")
+    Component(domainDataMapperComponent, "Domain Data Mapper", "C++/CLI", "Maps data between SQL results and domain entities.")
+
+    ' Define the interactions between the components
+    uiContractComponent -down-> dbInteractionComponent : Utilises
+    uiContractComponent -> domainDataMapperComponent : Transforms data using
+
+    dbInteractionComponent .right.> domainDataMapperComponent : Sends raw data to
+}
+
+' External containers and systems
+Container_Ext(uiComponents, "User-Interface Components", "DLL (MFC-Based C++/CLI)", "Contains windows forms and user controls. Interfaces with Data Access Layer for data.")
+Container_Ext(externalLibComponent, "External Libraries", "DLLs (C, C++/MFC, or C++/CLI)", "Pre-existing company libraries for specialised operations.")
+Container(domainContainer, "Domain", "DLL (MFC-Based C++/CLI)", "Contains ref classes and ref structs for the domain model.", $tags="backendContainer")
+ContainerDb(externalDatabase, "TSC-Server", "SQL Server Database", "Stores support tracker data.")
+
+' Interactions between DAL and external containers
+domainDataMapperComponent -down-> externalLibComponent : Utilises for data conversions
+dbInteractionComponent -down-> externalLibComponent : Utilises for certain ops
+
+dbInteractionComponent -left-> externalDatabase : Performs CRUD ops
+domainDataMapperComponent -> domainContainer : Maps using domain model
+
+uiComponents -left-> uiContractComponent : Interacts with
+
+SHOW_LEGEND()
+
+@enduml

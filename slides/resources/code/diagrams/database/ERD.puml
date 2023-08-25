@@ -1,0 +1,252 @@
+@startuml "Support Tracker - Database Entity Relationships Diagram"
+
+' Definitions
+' -----------
+
+!define primary_key(_field) <b><color:#b8861b><&key></color> _field</b>
+!define primary_key(_field, _type) <b><color:#b8861b><&key></color> _field</b>: <i>_type</i>
+
+!define foreign_key(_field) <color:#aaaaaa><&key></color> _field
+!define foreign_key(_field, _type) <color:#aaaaaa><&key></color> _field: <i>_type</i>
+!define foreign_key(_field, _type, _null) <color:#aaaaaa><&key></color> _field: <i>_type</i> <<_null>>
+
+!define field(_field) <&media-record> _field
+!define field(_field, _type) <&media-record> _field: <i>_type</i>
+!define field(_field, _type, _null) <&media-record> _field: <i>_type</i> <<_null>>
+
+!define table(_field) entity "<b>_field</b>" as _field << (T, white) >>
+!define table(_field, _type) entity "<b>_field</b>" as _field << (T, white) >> <<_type>>
+
+!define base_table(_field) entity "<b>_field</b>" as _field << (B, #282828) >> <<Base>>
+!define junction_table(_field) entity "<b>_field</b>" as _field << (J, #282828) >> <<Junction>>
+!define lookup_table(_field) entity "<b>_field</b>" as _field << (L, #282828) >> <<Lookup>>
+
+
+' Styling
+' --------
+
+hide empty members
+
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+' skinparam roundcorner 5
+skinparam linetype ortho
+skinparam nodesep 150
+skinparam ranksep 100
+
+' Applying theme
+!theme crt-amber
+
+skinparam class {
+    FontSize 14
+    ' BorderColor Black 
+    BorderThickness 3
+}
+
+skinparam class<<Base>> {
+    ' BackgroundColor #9BCDD2
+}
+
+skinparam class<<Junction>> {
+    ' BackgroundColor #B3C890
+}
+
+skinparam class<<Lookup>> {
+    ' BackgroundColor #FFB84C
+}
+
+
+' Title
+' ------
+
+title Support Tracker - Database Table Relationships
+
+
+' Entities
+' ---------
+
+base_table(Tickets)
+{
+    primary_key(Ticket_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Status_ID, GUID, NotNull)
+    foreign_key(Contract_ID, INT, Nullable)
+    foreign_key(Version_ID, INT, Nullable)
+    foreign_key(Build_ID, INT, Nullable)
+    foreign_key(Primary_Engineer_ID, NVARCHAR(255), NotNull)
+    foreign_key(Primary_Contact_ID, NVARCHAR(255), NotNull)
+    foreign_key(Awaiting_Engineer_ID, NVARCHAR(255), Nullable)
+    foreign_key(Awaiting_Contact_ID, NVARCHAR(255), Nullable)
+    
+    == Base Fields ==
+    field(Overview, TEXT, Nullable)
+    field(Notes, TEXT, Nullable)
+    field(Awaiting_Reason, TEXT, Nullable)
+    field(Deleted, BIT, NotNull)
+
+}
+
+base_table(Events)
+{
+    primary_key(Event_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Ticket_ID, GUID)
+    foreign_key(Event_Type_ID, GUID)
+    foreign_key(Engineer_ID, NVARCHAR(255), NotNull)
+    foreign_key(Contact_ID, NVARCHAR(255), Nullable)
+    foreign_key(Program_ID, INT, Nullable)
+    
+    == Base Fields ==
+    field(Overview, TEXT, Nullable)
+    field(Notes, TEXT, Nullable)
+    field(Timestamp, DATETIME, NotNull)
+    field(Duration_Seconds, INT, NotNull)
+
+}
+
+base_table(Audit_Actions)
+{
+    primary_key(Audit_Action_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Engineer_ID, NVARCHAR(255), NotNull)
+    foreign_key(Audit_Action_Type_ID, GUID, NotNull)
+    foreign_key(Trigger_Action_ID, GUID, Nullable)
+    
+    == Base Fields ==
+    field(Timestamp, DATETIME, NotNull)
+
+}
+
+base_table(Linked_Files)
+{
+    primary_key(Linked_File_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Ticket_ID, GUID, NotNull)
+    foreign_key(Event_ID, GUID, Nullable)
+    
+    == Base Fields ==
+    field(Display_Name, TEXT, Nullable)
+    field(File_Path, TEXT, NotNull)
+    field(Notes, TEXT, Nullable)
+    field(Deleted, BIT, NotNull)
+
+}
+
+junction_table(Linked_Mantis_References)
+{
+    primary_key(Linked_Mantis_Reference_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Mantis_Reference_ID, NVARCHAR(30), NotNull)
+    foreign_key(Ticket_ID, GUID, NotNull)
+    foreign_key(Event_ID, GUID, Nullable)
+    
+    == Base Fields ==
+    field(Deleted, BIT, NotNull)
+
+}
+
+junction_table(Ticket_Audit_Actions)
+{
+    primary_key(Ticket_Audit_Action_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Ticket_ID, GUID, NotNull)
+    foreign_key(Audit_Action_ID, GUID, NotNull)
+
+}
+
+junction_table(Event_Audit_Actions)
+{
+    primary_key(Event_Audit_Action_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Event_ID, GUID, NotNull)
+    foreign_key(Audit_Action_ID, GUID, NotNull)
+
+}
+
+junction_table(Linked_Mantis_Audit_Actions)
+{
+    primary_key(Linked_Mantis_Audit_Action_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Linked_Mantis_Reference_ID, GUID, NotNull)
+    foreign_key(Audit_Action_ID, GUID, NotNull)
+
+}
+
+junction_table(Linked_File_Audit_Actions)
+{
+    primary_key(Linked_File_Audit_Action_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Linked_File_ID, GUID, NotNull)
+    foreign_key(Audit_Action_ID, GUID, NotNull)
+
+}
+
+lookup_table(Ticket_Statuses)
+{
+    primary_key(Status_ID, GUID)
+    
+    == Base Fields ==
+    field(Status, NVARCHAR(255), NotNull)
+
+}
+
+lookup_table(Event_Types)
+{
+    primary_key(Event_Type_ID, GUID)
+    
+    == Base Fields ==
+    field(Type, NVARCHAR(255), NotNull)
+
+}
+
+lookup_table(Audit_Action_Types)
+{
+    primary_key(Audit_Action_Type_ID, GUID)
+    
+    == Base Fields ==
+    field(Action, NVARCHAR(255), NotNull)
+
+}
+
+
+' Relationships
+' --------------
+
+Tickets -up- Ticket_Statuses
+
+Events *-up- Event_Types : Event_Type_ID
+
+Tickets "1" ||-right-|{ "many" Events : Ticket_ID
+
+' Linked Files
+Tickets "many" }o-left-|| "many" Linked_Files : Ticket_ID
+Events "many" }o-left-|| "many" Linked_Files : Event_ID
+
+' Mantis References
+Tickets "many" }o-right-|| "many" Linked_Mantis_References : Ticket_ID
+Events "many" }o-right-|| "many" Linked_Mantis_References : Event_ID
+
+' Audit Links
+Audit_Actions *-down- Audit_Action_Types : Audit_Action_Type_ID
+
+Audit_Actions "1" ||-up-|{ "many" Ticket_Audit_Actions : Audit_Action_ID
+Audit_Actions "1" ||-up-|{ "many" Event_Audit_Actions : Audit_Action_ID
+Audit_Actions "1" ||-up-|{ "many" Linked_Mantis_Audit_Actions : Audit_Action_ID
+Audit_Actions "1" ||-up-|{ "many" Linked_File_Audit_Actions : Audit_Action_ID
+
+Tickets "many" }o-down-|| "many" Ticket_Audit_Actions : Ticket_ID
+Events "many" }o-down-|| "many" Event_Audit_Actions : Event_ID
+Linked_Mantis_References "many" }o-down-|| "many" Linked_Mantis_Audit_Actions : Linked_Mantis_Reference_ID
+Linked_Files "many" }o-down-|| "many" Linked_File_Audit_Actions : Linked_File
+
+@enduml

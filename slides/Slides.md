@@ -1,7 +1,27 @@
 ---
 marp: true
+
+# Meta
+title: "Support Tracker"
+description: "Teesside University Software Development Work-Based Project"
 theme: custom-gaia
-footer: 'https://example.com'
+class:
+  - invert
+
+# Title Slide
+_header: "![height:75px left](resources/images/tascomp/Tascomp%20Profile.jpeg)"
+_footer: "**Shaun Broomfield** *<C2518141>* **|** **Teesside University** *<CIS1054-N-JA2-2022>*" 
+_paginate: false
+_class:
+  - lead
+  - invert
+
+# Rest of the Slides
+header: "" 
+footer: ""
+paginate: true
+
+# Embedded Stylesheet
 style: |
   .columns {
     display: grid;
@@ -32,94 +52,139 @@ style: |
   @import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css'
 ---
 
-# My Presentation
-![bg right](https://picsum.photos/800/600)
+<!-- Page{0} Front -->
+
+# Support Tracker
+
+Software Development Work-Based Project
+
+![bg height:300px right](resources/images/vector%20illustrations/customer-support-2.svg)
+
+<!-- 
+Script: 
+ - Wait for start
+ - Don't say anything, just wait for a few seconds for them to read
+ - Move to next slide
+ -->
 
 ---
 
-<!-- Speaker Notes -->
-## Slide 1
+<!-- Slides[0.1] Greetings -->
+<!-- class: invert -->
 
-- Item 1
-- Item 2
-- Item 3
-<!-- Can have multiple on a slide -->
+![height:250px](resources/slides/miscellaneous/hello!.svg)
 
----
+## Welcome to my presentation
 
-## Slide 2
-<!-- Can also do a multiline
-comment that will show in notes -->
+![bg right:40%](<resources/images/memes/hello groot.gif>)
 
-![Image](https://picsum.photos/800/600)
-
----
-
-## Slide 3
-
-> This is a quote.
+<!-- 
+Script: 
+ - Say "Hello"
+ - Welcome everyone to the presentation
+ - Move to next slide
+ -->
 
 ---
 
-## Slide 4
+<!-- Slides[0.2] Who am I? -->
 
-| Column 1 | Column 2 |
-| -------- | -------- |
-| Item 1   | Item 2   |
-| Item 3   | Item 4   |
+![bg height:250px](resources/slides/miscellaneous/Who%20am%20I%20.svg)
 
----
-
-![bg opacity](https://picsum.photos/800/600?image=53)
-## Slide 5
-
-<div class="columns">
-<div>
-
-## Left
-
-- 1
-- 2
-
-</div>
-<div>
-
-## Right
-
-- 3
-- 4
-
-</div>
-</div>
+<!-- 
+Script: 
+ - Introduce the introduction...
+ - Ask "Who am I?"
+ - Move to next slide
+ -->
 
 ---
 
-## Slide 6
+<!-- Slides[1] Me, Myself, Irene? -->
+<!--  -->
 
-<i class="fa-brands fa-twitter"></i> Twitter: 
-<i class="fa-brands fa-mastodon"></i> Mastodon: 
-<i class="fa-brands fa-linkedin"></i> LinkedIn: 
-<i class="fa fa-window-maximize"></i> Blog: 
-<i class="fa-brands fa-github"></i> GitHub: 
+<!-- class: invert -->
+
+![bg left:40%](<resources/images/portrait/casual - grayscale.jpg>)
+
+## Shaun Broomfield
+
+### Software Engineer
+
+<i class="fa-brands fa-linkedin"></i> [ShaunBroomfield](https://www.linkedin.com/in/shaunbroomfield)
+
+<i class="fas fa-globe"></i> [shaunbroomfield.com](https://shaunbroomfield.com/)
+
+<i class="fa-brands fa-github"></i> [Broomfields](https://github.com/Broomfields)
+
+<!-- 
+Script: 
+ - Introduce myself
+ - Move to next slide
+ -->
 
 ---
 
-# <!--fit--> Large Text
+<!-- Slides[1.1} Who do I work for?  -->
+
+![bg height:250px](resources/slides/miscellaneous/Whom%20do%20I%20work%20for%20.svg)
+
+<!-- 
+Script: 
+ - Ask the question...
+ - Wait a second
+ - Move to next slide
+ -->
 
 ---
 
-<!-- Needed for mermaid, can be anywhere in file except frontmatter -->
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: true });
-</script>
+<!-- Slides[2] Tascomp -->
 
-# Mermaid
+<!-- _header: "![height:220px right](resources/images/tascomp/Banner%203.png)" -->
 
-<div class="mermaid">
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
-</div>
+<!-- ## Tascomp Limited -->
+
+Tascomp are the developers of the Prodigy HMI SCADA software package for industrial monitoring, control, and automation.
+
+Since our establishment in 1981, we have been committed to delivering and improving upon industrial automation and monitoring in a wide range of fields.
+
+<!-- 
+Script: 
+ - Introduce Tascomp
+ - Provide a general overview
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[2.1] Tascomp Products -->
+
+<!-- _header: "![height:75px left](resources/images/tascomp/Tascomp%20Profile.jpeg)" -->
+
+## Products
+
+fubar
+
+<!-- 
+Script: 
+ - Introduce Prodigy, PlantRun, PAMS
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[1] slide purpose -->
+
+## Header
+
+fubar
+
+---
+
+<!-- Slides[1] slide purpose -->
+
+## Header
+
+fubar
+
+---

@@ -1,0 +1,67 @@
+@startuml "Support Tracker - Domain Component Diagram"
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+' Tags
+SHOW_PERSON_OUTLINE()
+AddElementTag("backendContainer", $fontColor=$ELEMENT_FONT_COLOR, $bgColor="#335DA5", $shape=EightSidedShape(), $legendText="backend container\neight sided")
+AddRelTag("async", $textColor=$ARROW_FONT_COLOR, $lineColor=$ARROW_COLOR, $lineStyle=DashedLine())
+AddRelTag("sync/async", $textColor=$ARROW_FONT_COLOR, $lineColor=$ARROW_COLOR, $lineStyle=DottedLine())
+
+' Styling
+hide empty members
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam nodesep 150
+skinparam ranksep 100
+skinparam Linetype ortho
+
+title "Support Tracker - Domain Component Diagram"
+
+' Define the Domain as a container
+Container_Boundary(c2, "Domain", "Controls the flow and structure of data from the code side.") {
+
+    ' Define the primary components
+    
+    Component(ticketComponent, "Ticket Component", "C++/CLI", "Handles all ticket-related operations.")
+    together {
+        Component(eventComponent, "Event Component", "C++/CLI", "Handles event operations for tickets.")
+        Component(linkedFileComponent, "Linked-File Component", "C++/CLI", "Manages linked files for tickets and events.")
+        Component(linkedMantisRefComponent, "Linked-Mantis-Reference Component", "C++/CLI", "Manages Mantis references linked to tickets/events.")
+    }
+    Component(auditActionComponent, "Audit-Action Component", "C++/CLI", "Handles auditing of entity actions.")
+    
+    
+    ' Define the interactions between the components
+    ticketComponent -down-> eventComponent : Contains
+    ticketComponent -down-> linkedFileComponent : Contains
+    ticketComponent -down-> linkedMantisRefComponent : Contains
+    ticketComponent -down-> auditActionComponent : Uses
+    
+    eventComponent -left-> linkedFileComponent : Contains
+    eventComponent -right-> linkedMantisRefComponent : Contains
+    eventComponent -down-> auditActionComponent : Uses
+
+    linkedFileComponent -down-> auditActionComponent : Uses
+    linkedMantisRefComponent -down-> auditActionComponent : Uses
+}
+
+' External containers and systems
+together {
+    Container(dataAccessLayer, "Data Access Layer (DAL)", "MFC-Based C++/CLI DLL", "Provides CRUD operations and communicates with the external database.", $tags="backendContainer")
+    ContainerDb(externalDatabase, "TSC-Server", "SQL Database", "Stores support tracker data.")
+}
+
+' Interactions between Domain and external containers
+dataAccessLayer -right-> ticketComponent : Uses for data storage and processing
+dataAccessLayer -down-> eventComponent : Uses for data storage and processing
+dataAccessLayer -down-> linkedFileComponent : Uses for data storage and processing
+dataAccessLayer -down-> linkedMantisRefComponent : Uses for data storage and processing
+dataAccessLayer -down-> auditActionComponent : Uses for data storage and processing
+
+dataAccessLayer -down-> externalDatabase : Communicates
+
+SHOW_LEGEND()
+
+@enduml

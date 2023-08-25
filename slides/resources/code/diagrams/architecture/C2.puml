@@ -1,0 +1,69 @@
+@startuml "Support Tracker - Container Diagram"
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+SHOW_PERSON_OUTLINE()
+
+' Styling
+hide empty members
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam nodesep 150
+skinparam ranksep 100
+
+title "Support Tracker - Container Diagram"
+
+
+AddBoundaryTag("API_Background", $bgColor="lightblue", $fontColor="black", $borderColor="black")
+
+System_Boundary(c1, "Support Tracker System") {
+
+    Container(toolPrototype, "Tool Prototype", "MFC EXE", "Utilises a windows form predominantly made up of user controls from User-Interface Components.")
+
+    ' Define the system
+    Container_Boundary(c2, "Support Tracker System API", $tags="API_Background") {
+
+        ' Define Containers
+        Container(uiComponents, "User-Interface Components", "MFC DLL", "Contains windows forms and user controls. Interfaces with Data Access Layer for data.")
+        Container(dataAccessLayer, "Data Access Layer", "MFC DLL", "Provides functions for reading/writing data, interfaces with SQL Server.")
+        Container(domain, "Domain", "MFC DLL", "Contains ref classes and ref structs, acts as a Domain Model.")
+
+        ' Connect containers to each other
+        toolPrototype -down-> uiComponents
+        uiComponents -down-> dataAccessLayer
+        dataAccessLayer -right-> domain
+    }
+
+    ' Database connections
+    ContainerDb(tscServerDatabase, "TSC-Server", "Storage Layer (MS SQL Server)", "Stores databases for internal tools.")
+
+    ' Connect Data Access Layer to databases
+    dataAccessLayer -down-> tscServerDatabase
+
+}
+
+' Define external libraries
+System_Ext(tascompLibraries, "Tascomp Internal Libraries", "External Libraries. Used by the Data Access Layer.")
+
+' Define actors and their interactions (From your context diagram)
+Person(seniorLeadership, "Senior Leadership", "Views Support summary and metrics.")
+Person(supportTeam, "Support Team", "Creates and manages support tickets.")
+Person(appTeam, "Applications Team", "Adds their own events (Linking Applications Tracking) to existing tickets.")
+Person(softwareTeam, "Software Team", "Adds their own events (Linking Software Tracking) to existing tickets.")
+Person(hardwareTeam, "Hardware Team", "Adds their own events (Linking Hardware Tracking) to existing tickets.")
+
+' Connect actors to the main Tool Prototype container
+seniorLeadership --> toolPrototype
+supportTeam --> toolPrototype
+appTeam --> toolPrototype
+softwareTeam --> toolPrototype
+hardwareTeam --> toolPrototype
+
+' Connection between Data Access Layer and external libraries
+uiComponents -left-> tascompLibraries
+dataAccessLayer -left-> tascompLibraries
+
+SHOW_LEGEND()
+
+@enduml

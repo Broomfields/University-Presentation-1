@@ -1,0 +1,85 @@
+@startuml "Support Tracker - Database Schema Lookup Tables"
+
+' Definitions
+' -----------
+
+!define primary_key(_field) <b><color:#b8861b><&key></color> _field</b>
+!define primary_key(_field, _type) <b><color:#b8861b><&key></color> _field</b>: <i>_type</i>
+
+!define foreign_key(_field) <color:#aaaaaa><&key></color> _field
+!define foreign_key(_field, _type) <color:#aaaaaa><&key></color> _field: <i>_type</i>
+!define foreign_key(_field, _type, _null) <color:#aaaaaa><&key></color> _field: <i>_type</i> <<_null>>
+
+!define field(_field) <&media-record> _field
+!define field(_field, _type) <&media-record> _field: <i>_type</i>
+!define field(_field, _type, _null) <&media-record> _field: <i>_type</i> <<_null>>
+
+!define table(_field) entity "<b>_field</b>" as _field << (T, white) >>
+!define table(_field, _type) entity "<b>_field</b>" as _field << (T, white) >> <<_type>>
+
+!define base_table(_field) entity "<b>_field</b>" as _field << (B, #282828) >> <<Base>>
+!define junction_table(_field) entity "<b>_field</b>" as _field << (J, #282828) >> <<Junction>>
+!define lookup_table(_field) entity "<b>_field</b>" as _field << (L, #282828) >> <<Lookup>>
+
+
+' Styling
+' --------
+
+top to bottom direction
+
+hide empty members
+
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam roundcorner 5
+skinparam linetype ortho
+skinparam nodesep 50
+skinparam ranksep 50
+
+' Applying theme
+!theme crt-amber
+
+skinparam class {
+    FontSize 14
+    BorderThickness 3
+}
+
+
+' Title
+' ------
+
+title Support Tracker - Database Schema - Lookup Tables
+
+
+' Entities
+' ---------
+
+lookup_table(Ticket_Statuses)
+{
+    primary_key(Status_ID, GUID)
+    
+    == Base Fields ==
+    field(Status, NVARCHAR(255), NotNull)
+
+}
+
+lookup_table(Event_Types)
+{
+    primary_key(Event_Type_ID, GUID)
+    
+    == Base Fields ==
+    field(Type, NVARCHAR(255), NotNull)
+
+}
+
+lookup_table(Audit_Action_Types)
+{
+    primary_key(Audit_Action_Type_ID, GUID)
+    
+    == Base Fields ==
+    field(Action, NVARCHAR(255), NotNull)
+
+}
+
+@enduml

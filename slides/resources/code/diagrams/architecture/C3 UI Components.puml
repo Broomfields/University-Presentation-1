@@ -1,0 +1,71 @@
+@startuml "Support Tracker - User-Interface Components Diagram"
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+' Tags
+SHOW_PERSON_OUTLINE()
+AddElementTag("backendContainer", $fontColor=$ELEMENT_FONT_COLOR, $bgColor="#335DA5", $shape=EightSidedShape(), $legendText="backend container\neight sided")
+AddElementTag("uiContainer", $fontColor=$ELEMENT_FONT_COLOR, $bgColor="#FFD86A", $shape=EightSidedShape(), $legendText="UI container\neight sided")
+AddRelTag("async", $textColor=$ARROW_FONT_COLOR, $lineColor=$ARROW_COLOR, $lineStyle=DashedLine())
+AddRelTag("sync/async", $textColor=$ARROW_FONT_COLOR, $lineColor=$ARROW_COLOR, $lineStyle=DottedLine())
+
+' Styling
+hide empty members
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam nodesep 150
+skinparam ranksep 100
+skinparam Linetype ortho
+
+title "Support Tracker - User-Interface Components Diagram"
+
+left to right direction
+
+' Define the User Interface Components as a container
+Container_Boundary(c1, "User Interface Components", "MFC DLL which provides various windows forms and user controls.") {
+
+    ' Define the primary components
+    together {
+        Component(mainViewComponent, "MainView", "MFC/WindowsForm", "Primary window for user interaction.")
+        Component(ticketsViewComponent, "TicketsView", "MFC/UserControl", "Displays a list of tickets and allows filtering.")
+        Component(ticketViewComponent, "TicketView", "MFC/UserControl", "Details of a single ticket.")
+        Component(eventViewComponent, "EventView", "MFC/UserControl", "Details of a specific event within a ticket.")
+    }
+
+    together {
+        Component(linkedFilesViewComponent, "LinkedFilesView", "MFC/WindowsForm", "Displays and manages linked files.")
+        Component(mantisReferencesViewComponent, "MantisReferencesView", "MFC/WindowsForm", "Manages Mantis references.")
+    }
+    
+    Component(baseLinksViewComponent, "BaseLinksView", "MFC/WindowsForm", "Base view for linked items.")
+
+    mainViewComponent .left.> ticketsViewComponent : Contains
+    ticketsViewComponent .left.> ticketViewComponent : Switches to
+    ticketViewComponent .left.> eventViewComponent : Switches to
+    
+    ticketViewComponent .down.> linkedFilesViewComponent : Launches
+    ticketViewComponent .down.> mantisReferencesViewComponent : Launches
+
+    eventViewComponent .down.> linkedFilesViewComponent : Launches
+    eventViewComponent .down.> mantisReferencesViewComponent : Launches
+
+    linkedFilesViewComponent -down-> baseLinksViewComponent : Inherits From
+    mantisReferencesViewComponent -down-> baseLinksViewComponent : Inherits From
+}
+
+' External containers and systems
+Container(dataAccessLayer, "Data Access Layer (DAL)", "MFC-Based C++/CLI DLL", "Provides data to UI components via data-bindings.", $tags="backendContainer")
+
+' Interactions between UI Components and external containers
+
+mantisReferencesViewComponent -up-> dataAccessLayer : Fetches Data-Bindings
+linkedFilesViewComponent -up-> dataAccessLayer : Fetches Data-Bindings
+eventViewComponent -up-> dataAccessLayer : Fetches Data-Bindings
+ticketViewComponent -up-> dataAccessLayer : Fetches Data-Bindings
+ticketsViewComponent -up-> dataAccessLayer : Fetches Data-Bindings
+mainViewComponent -up-> dataAccessLayer : Fetches Data-Bindings
+
+SHOW_LEGEND()
+
+@enduml

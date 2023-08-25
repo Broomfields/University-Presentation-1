@@ -1,0 +1,296 @@
+@startuml "Support Tracker - Views Class Diagram"
+
+
+' Styling
+' --------
+
+hide empty members
+
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam linetype ortho
+skinparam nodesep 150
+skinparam ranksep 100
+
+' Applying theme
+!theme crt-amber
+
+
+' Title
+' ------
+
+title Support Tracker - User Interface View Classes
+
+
+' C++/CLI Classes
+' ----------------
+
+together {
+    class MainView <<WindowsForm>> {
+        
+        == Properties ==
+        -ViewStack : List<UserControl^>
+        -ChangesPending : bool
+        
+        == Overridden Properties ==
+        #Text : String^
+
+        == Events ==
+        #MainView_Load() : System::Void
+        #MainView_VisibleChanged() : System::Void
+
+        == Controls ==
+        -Contents : Panel^
+        -BackButton : Button^
+        -ApplyButton : Button^
+        -ExitButton : Button^
+    }
+
+    class TicketsView <<UserControl>> {
+        
+        == Controls ==
+        -Panel : FlowLayoutPanel^
+        -Filtering : TicketsFilterView^
+        -List : TicketsListView^
+    }
+
+    class TicketView <<UserControl>> {
+        
+        == Controls ==
+        -Panel : FlowLayoutPanel^
+        -Filtering : TicketDetailsView^
+        -List : TicketEventsListView^
+    }
+
+    class EventView <<UserControl>> {
+        
+        == Events ==
+        #TypeDropDown_SelectedChanged() : System::Void
+        #EngineerDropDown_SelectedChanged() : System::Void
+        #ContactDropDown_SelectedChanged() : System::Void
+        #RelatedProgram_SelectedChanged() : System::Void
+        #RelatedProgram_TextChanged() : System::Void
+        #OverviewText_TextChanged() : System::Void
+        #NotesText_TextChanged() : System::Void
+        #DurationText_TextChanged() : System::Void
+        #TimestampDTPicker_ValueChanged() : System::Void
+        #LinkedFilesButton_Clicked() : System::Void
+        #LinkedReferencesButton_Clicked() : System::Void
+
+        == Controls ==
+        -IDLabel : Label^
+        -TypeDropDown : ComboBox^
+        -EngineerDropDown : ComboBox^
+        -ContactDropDown : ComboBox^
+        -RelatedProgramDropDown : ComboBox^
+        -OverviewText : TextBox^
+        -NotesText : TextBox^
+        -TimestampDTPicker : DateTimePicker^
+        -DurationText : TextBox^
+        -LinkedFilesButton : Button^
+        -LinkedFilesLabel : Label^
+        -LinkedReferencesButton : Button^
+        -LinkedReferencesLabel : Label^
+    }
+}
+
+together {
+    class TicketsFilterView <<UserControl>> {
+        
+        == Events ==
+        #TicketOpenCheck_CheckedChanged() : System::Void
+        #StatusDropDown_SelectedChanged() : System::Void
+        #TypeDropDown_SelectedChanged() : System::Void
+        #EngineerDropDown_SelectedChanged() : System::Void
+        #PrimaryEngineerDropDown_SelectedChanged() : System::Void
+        #ContractText_TextChanged() : System::Void
+        #CustomerText_TextChanged() : System::Void
+
+        == Controls ==
+        -TicketOpenCheck : CheckBox^
+        -StatusDropDown : ComboBox^ 
+        -TypeDropDown : ComboBox^
+        -EngineerDropDown : ComboBox^
+        -PrimaryEngineerDropDown : ComboBox^
+        -ContractText : TextBox^
+        -CustomerText : TextBox^
+    }
+
+    class TicketsListView <<UserControl>> {
+        
+        == Events ==
+        #TicketsGridContext_ItemClicked() : System::Void
+        #ViewTicketButton_Clicked() : System::Void
+        #AddTicketButton_Clicked() : System::Void
+        #RemoveTicketButton_Clicked() : System::Void
+
+        == Controls ==
+        -TicketsGrid : DataGridView^
+        -ViewTicketButton : Button^
+        -AddTicketButton : Button^
+        -RemoveTicketButton : Button^
+        -TicketsGridContext : ContextMenuStrip^
+        -ContextViewTicket : MenuItem^
+        -ContextRemoveTicket : MenuItem^
+    }
+
+    class TicketDetailsView <<UserControl>> {
+        
+        == Functions ==
+        -RefreshFromStatus() : void
+        
+        == Events ==
+        #StatusDropDown_SelectionChanged() : System::Void
+        #PrimaryEngineerDropDown_SelectionChanged() : System::Void
+        #PrimaryContactDropDown_SelectionChanged() : System::Void
+        #AwaitingEngineerDropDown_SelectionChanged() : System::Void
+        #AwaitingContactDropDown_SelectionChanged() : System::Void
+        #OverviewText_TextChanged() : System::Void
+        #Notes_TextChanged() : System::Void
+        #AwaitingReasonText_TextChanged() : System::Void
+        #LinkedFilesButton_Clicked() : System::Void
+        #LinkedReferencesButton_Clicked() : System::Void
+
+        == Controls ==
+        -IDLabel : Label^
+        -StatusDropDown : ComboBox^
+        -ContractNumberLabel : Label^
+        -CustomerNameLabel : Label^
+        -BuildAndNumberLabel : Label^
+        -PrimaryEngineerDropDown : ComboBox^
+        -PrimaryContactDropDown : ComboBox^
+        -OverviewText : TextBox^
+        -Notes : TextBox^
+        -AwaitingReasonText : TextBox^
+        -AwaitingEngineerDropDown : ComboBox^
+        -AwaitingContactDropDown : ComboBox^
+        -DurationLabel : Label^
+        -LinkedFilesButton : Button^
+        -LinkedFilesLabel : Label^
+        -LinkedReferencesButton : Button^
+        -LinkedReferencesLabel : Label^
+    }
+
+    class TicketEventsListView <<UserControl>> {
+        
+        == Functions ==
+        -ViewEvent() : void
+        -AddEvent() : void
+        -RemoveEvent() : void
+
+        == Events ==
+        #TicketEventsGridCell_DoubleClicked() : System::Void
+        #TicketEventsGridContext_ItemClicked() : System::Void
+        #ViewEventButton_Clicked() : System::Void
+        #AddEventButton_Clicked() : System::Void
+        #RemoveEventButton_Clicked() : System::Void
+
+        == Controls ==
+        -EventTypesGrid : DataGridView^
+        -EventEngineersGrid : DataGridView^
+        -EventProgramsGrid : DataGridView^
+        -TicketEventsGrid : DataGridView^
+        -ViewEventButton : Button^
+        -AddEventButton : Button^
+        -RemoveEventButton : Button^
+        -GridContext : ContextMenuStrip^
+        -ContextViewEvent : MenuItem^
+        -ContextRemoveEvent : MenuItem^
+    }
+}
+
+class BaseUserControl <<Template>> {
+    
+    == Properties ==
+
+    == Functions ==
+    {abstract} -InitialiseControls() : void
+
+    == Events ==
+    -Load() : System::Void
+}
+
+note right of BaseUserControl {
+    Inherits from System::Windows::Forms::UserControl.
+}
+
+together {
+    class LinkedFilesView <<WindowsForm>> {
+        
+    }
+
+    class MantisReferencesView <<WindowsForm>> {
+        
+    }
+
+    class BaseLinksView <<WindowsForm>> {
+        
+        == Properties ==
+        #ChangesPending : bool
+
+        == Overridden Properties ==
+        #Text : String^
+        
+        == Functions ==
+        #ViewBaseLink() : void
+        #AddBaseLink() : void
+        #RemoveBaseLink() : void
+        
+        == Events ==
+        #BaseLinksView_Load() : System::Void
+        #BaseLinksView_VisibleChanged() : System::Void
+        #BaseLinksGridContext_ItemClicked() : System::Void
+        #ViewBaseLinkButton_Clicked() : System::Void
+        #AddBaseLinkButton_Clicked() : System::Void
+        #RemoveBaseLinkButton_Clicked() : System::Void
+
+        == Controls ==
+        -BaseLinksCountLabel : Label^
+        -BaseLinksGrid : DataGridView^
+        -ViewBaseLinkButton : Button^
+        -AddBaseLinkButton : Button^
+        -RemoveBaseLinkButton : Button^
+        -GridContext : ContextMenuStrip^
+        -ContextViewBaseLink : MenuItem^
+        -ContextRemoveBaseLink : MenuItem^
+    }
+}
+
+' Relationships
+' --------------
+
+MainView "1" *-right- "{1}" TicketsView : composed of
+MainView "1" *-right- "{1}" TicketView : composed of
+MainView "1" *-right- "{1}" EventView : composed of
+
+TicketsView "1" *-down- "{1}" TicketsFilterView : composed of
+TicketsView "1" *-down- "{1}" TicketsListView : composed of
+
+TicketView "1" *-down- "{1}" TicketDetailsView : composed of
+TicketView "1" *-down- "{1}" TicketEventsListView : composed of
+
+MainView .right.> TicketsView : displays
+TicketsView .right.> TicketView : launches
+TicketView .right.> EventView : launches
+
+LinkedFilesView .left.|> BaseLinksView : inherits from
+MantisReferencesView .left.|> BaseLinksView : inherits from
+
+TicketView .up.> LinkedFilesView : launches
+EventView .up.> LinkedFilesView : launches
+
+TicketView .up.> MantisReferencesView : launches
+EventView .up.> MantisReferencesView : launches
+
+TicketsView .down.|> BaseUserControl : inherits from
+TicketsFilterView .down.|> BaseUserControl : inherits from
+TicketsListView .down.|> BaseUserControl : inherits from
+TicketView .down.|> BaseUserControl : inherits from
+TicketDetailsView .down.|> BaseUserControl : inherits from
+TicketEventsListView .down.|> BaseUserControl : inherits from
+EventView .down.|> BaseUserControl : inherits from
+
+
+
+@enduml

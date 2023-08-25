@@ -1,0 +1,104 @@
+@startuml "Support Tracker - Ticket View Class Diagram"
+
+' Styling
+' --------
+
+hide empty members
+
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam linetype ortho
+skinparam nodesep 150
+skinparam ranksep 100
+
+' Applying theme
+!theme crt-amber
+
+
+' Title
+' ------
+
+title Support Tracker - User Interface - Tickets View
+
+
+' C++/CLI Classes
+' ----------------
+
+class TicketsView <<UserControl>> {
+    
+    == Controls ==
+    -Panel : FlowLayoutPanel^
+    -Filtering : TicketsFilterView^
+    -List : TicketsListView^
+}
+
+together {
+    class TicketsFilterView <<UserControl>> {
+        
+        == Events ==
+        #TicketOpenCheck_CheckedChanged() : System::Void
+        #StatusDropDown_SelectedChanged() : System::Void
+        #TypeDropDown_SelectedChanged() : System::Void
+        #EngineerDropDown_SelectedChanged() : System::Void
+        #PrimaryEngineerDropDown_SelectedChanged() : System::Void
+        #ContractText_TextChanged() : System::Void
+        #CustomerText_TextChanged() : System::Void
+
+        == Controls ==
+        -TicketOpenCheck : CheckBox^
+        -StatusDropDown : ComboBox^ 
+        -TypeDropDown : ComboBox^
+        -EngineerDropDown : ComboBox^
+        -PrimaryEngineerDropDown : ComboBox^
+        -ContractText : TextBox^
+        -CustomerText : TextBox^
+    }
+
+    class TicketsListView <<UserControl>> {
+        
+        == Events ==
+        #TicketsGridContext_ItemClicked() : System::Void
+        #ViewTicketButton_Clicked() : System::Void
+        #AddTicketButton_Clicked() : System::Void
+        #RemoveTicketButton_Clicked() : System::Void
+
+        == Controls ==
+        -TicketsGrid : DataGridView^
+        -ViewTicketButton : Button^
+        -AddTicketButton : Button^
+        -RemoveTicketButton : Button^
+        -TicketsGridContext : ContextMenuStrip^
+        -ContextViewTicket : MenuItem^
+        -ContextRemoveTicket : MenuItem^
+    }
+}
+
+class BaseUserControl <<Template>> {
+    
+    == Properties ==
+
+    == Functions ==
+    {abstract} -InitialiseControls() : void
+
+    == Events ==
+    -Load() : System::Void
+}
+
+note right of BaseUserControl {
+    Inherits from System::Windows::Forms::UserControl.
+}
+
+' Relationships
+' --------------
+
+MainView "1" *-down- "{1}" TicketsView : composed of
+
+TicketsView "1" *-down- "{1}" TicketsFilterView : composed of
+TicketsView "1" *-down- "{1}" TicketsListView : composed of
+
+TicketsView .down.|> BaseUserControl : inherits from
+TicketsFilterView .down.|> BaseUserControl : inherits from
+TicketsListView .down.|> BaseUserControl : inherits from
+
+@enduml

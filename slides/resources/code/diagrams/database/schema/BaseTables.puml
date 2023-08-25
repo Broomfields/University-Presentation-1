@@ -1,0 +1,128 @@
+@startuml "Support Tracker - Database Schema Base Tables"
+
+' Definitions
+' -----------
+
+!define primary_key(_field) <b><color:#b8861b><&key></color> _field</b>
+!define primary_key(_field, _type) <b><color:#b8861b><&key></color> _field</b>: <i>_type</i>
+
+!define foreign_key(_field) <color:#aaaaaa><&key></color> _field
+!define foreign_key(_field, _type) <color:#aaaaaa><&key></color> _field: <i>_type</i>
+!define foreign_key(_field, _type, _null) <color:#aaaaaa><&key></color> _field: <i>_type</i> <<_null>>
+
+!define field(_field) <&media-record> _field
+!define field(_field, _type) <&media-record> _field: <i>_type</i>
+!define field(_field, _type, _null) <&media-record> _field: <i>_type</i> <<_null>>
+
+!define table(_field) entity "<b>_field</b>" as _field << (T, white) >>
+!define table(_field, _type) entity "<b>_field</b>" as _field << (T, white) >> <<_type>>
+
+!define base_table(_field) entity "<b>_field</b>" as _field << (B, #282828) >> <<Base>>
+!define junction_table(_field) entity "<b>_field</b>" as _field << (J, #282828) >> <<Junction>>
+!define lookup_table(_field) entity "<b>_field</b>" as _field << (L, #282828) >> <<Lookup>>
+
+
+' Styling
+' --------
+
+top to bottom direction
+
+hide empty members
+
+skinparam defaultFontStyle Monospaced
+skinparam shadowing false
+skinparam handwritten false
+skinparam roundcorner 5
+skinparam linetype ortho
+skinparam nodesep 50
+skinparam ranksep 50
+
+' Applying theme
+!theme crt-amber
+
+skinparam class {
+    FontSize 14
+    BorderThickness 3
+}
+
+' Title
+' ------
+
+title Support Tracker - Database Schema - Base Tables
+
+
+' Entities
+' ---------
+
+base_table(Tickets)
+{
+    primary_key(Ticket_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Status_ID, GUID, NotNull)
+    foreign_key(Contract_ID, INT, Nullable)
+    foreign_key(Version_ID, INT, Nullable)
+    foreign_key(Build_ID, INT, Nullable)
+    foreign_key(Primary_Engineer_ID, NVARCHAR(255), NotNull)
+    foreign_key(Primary_Contact_ID, NVARCHAR(255), NotNull)
+    foreign_key(Awaiting_Engineer_ID, NVARCHAR(255), Nullable)
+    foreign_key(Awaiting_Contact_ID, NVARCHAR(255), Nullable)
+    
+    == Base Fields ==
+    field(Overview, TEXT, Nullable)
+    field(Notes, TEXT, Nullable)
+    field(Awaiting_Reason, TEXT, Nullable)
+    field(Deleted, BIT, NotNull)
+
+}
+
+base_table(Events)
+{
+    primary_key(Event_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Ticket_ID, GUID)
+    foreign_key(Event_Type_ID, GUID)
+    foreign_key(Engineer_ID, NVARCHAR(255), NotNull)
+    foreign_key(Contact_ID, NVARCHAR(255), Nullable)
+    foreign_key(Program_ID, INT, Nullable)
+    
+    == Base Fields ==
+    field(Overview, TEXT, Nullable)
+    field(Notes, TEXT, Nullable)
+    field(Timestamp, DATETIME, NotNull)
+    field(Duration_Seconds, INT, NotNull)
+
+}
+
+base_table(Audit_Actions)
+{
+    primary_key(Audit_Action_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Engineer_ID, NVARCHAR(255), NotNull)
+    foreign_key(Audit_Action_Type_ID, GUID, NotNull)
+    foreign_key(Trigger_Action_ID, GUID, Nullable)
+    
+    == Base Fields ==
+    field(Timestamp, DATETIME, NotNull)
+
+}
+
+base_table(Linked_Files)
+{
+    primary_key(Linked_File_ID, GUID)
+
+    == Foreign Keys ==
+    foreign_key(Ticket_ID, GUID, NotNull)
+    foreign_key(Event_ID, GUID, Nullable)
+    
+    == Base Fields ==
+    field(Display_Name, TEXT, Nullable)
+    field(File_Path, TEXT, NotNull)
+    field(Notes, TEXT, Nullable)
+    field(Deleted, BIT, NotNull)
+
+}
+
+@enduml
