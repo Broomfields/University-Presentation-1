@@ -1,0 +1,47 @@
+
+
+/* Base styles for the table */
+table {
+    font-size: 13px;
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    border: none; /* This ensures the table itself has no borders */
+}
+
+/* Headers */
+table th {
+    background-color: var(--base);
+    color: var(--text);
+    font-weight: bold;
+    padding: 10px 15px;
+    border-top: none;
+    border-bottom: 3px solid var(--rose); /* Make the header's bottom border thicker */
+    text-align: left;
+}
+
+/* Rows and data cells */
+table td {
+    padding: 8px 15px;
+    border-bottom: 1px solid var(--rose);
+    background-color: var(--base);
+    color: var(--text);
+}
+
+/* Remove border from the last row */
+table tr:last-child td {
+    border-bottom: none;
+}
+
+/* This targets the first th and td of each row to ensure there's no left border */
+table th:first-child, 
+table td:first-child {
+    border-left: none;
+}
+
+/* This targets the last th and td of each row to ensure there's no right border */
+table th:last-child, 
+table td:last-child {
+    border-right: none;
+}
