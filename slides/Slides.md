@@ -118,15 +118,18 @@ style: |
       border-right: none;
   }
 
+  .smaller-text > blockquote {
+    font-size: 0.5em;  /* Adjust this value as needed */
+  }
+
   @import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css'
 ---
 
 <!-- Links -->
 [proposal-doc-link]: <resources/files/proposalDoc.pdf>
 [design-doc-link]: <resources/files/designDoc.pdf>
-[user-guide-link]: <resources/files/userGuide.pdf>
-[test-doc-link]: <resources/files/testDoc.pdf>
-[database-links-link]: <resources/files/databaseLinks.pdf>
+[user-guide-link]: <resources/files/userGuideDoc.pdf>
+[test-doc-link]: <resources/files/testDoc.xlsx>
 
 <!-- Page{0} Front -->
 
@@ -193,6 +196,10 @@ Script:
 
 <i class="fa-brands fa-github"></i> [Broomfields](https://github.com/Broomfields)
 
+<br>
+
+> I write code and stuff!
+
 <!-- 
 Script: 
  - Introduce myself
@@ -227,6 +234,7 @@ Since our establishment in 1981, we have been committed to delivering and improv
 </p>
 
 ### Products
+
 <div style="width:50%" class="columns3">
 
   <div class = "rounded_image">
@@ -541,10 +549,8 @@ Script:
 
 ## Consideration of Costing
 
-
 <div class="columns">
 <div style="width:700px">
-
 
 | Consideration Category   | Specific Items & Descriptions                                                                                             |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
@@ -554,7 +560,6 @@ Script:
 | Training & Documentation | - Demonstration meeting for user training<br>- Design Document, User Guide, Acceptance Testing Document                   |
 | Maintenance & Support    | - Bug fixes<br>- Ongoing enhancements<br>- User support                                                                   |
 | Contingency Funds        | - Unforeseen challenges & scope changes                                                                                   |
-
 
 </div>
 <div style="margin-left:250px;margin-top:75px;float:right;">
@@ -576,6 +581,19 @@ Script:
   
 ---
 
+## Ethical Considerations and Compliance
+
+A key constraint we must keep in mind during the development of our ticketing system is the need to follow ethical guidelines and relevant regulations. Being based in the UK, there are particular ethical factors we must take into account:
+
+| Point | Description |
+| --- | --- |
+| Data Protection and Privacy | Considering that the ticketing system will likely handle sensitive and personal data pertaining to customers, their site systems, and their support interactions, it is of utmost importance that we adhere to the regulations set forth by the General Data Protection Regulation (GDPR) and any other relevant data protection laws applicable in the UK. This ensures the proper safeguarding of customer’s privacy and data integrity. |
+| Equitable and Unbiased Treatment | We must design and implement our ticketing system to promote equity and prevent any form of discrimination. Any algorithms or decision-making processes used within the system need to be transparent, explainable, and free from biases linked to race, gender, age, or any other protected characteristic. |
+| Confidentiality and Security | Safeguarding the confidentiality and security of data within the ticketing system holds paramount importance. To mitigate the risks of data leaks and potential breaches of Non-Disclosure Agreements (NDAs), a crucial step is to employ encryption techniques to protect the database. |
+| Accessibility and Inclusivity | It's crucial that we design and develop our ticketing system with accessibility in mind, making sure it's usable by people with disabilities. We need to think about offering alternative means of access for users with varying abilities or needs. |
+
+---
+
 <!-- Slides[3.8] Management -->
 
 ## Project Management
@@ -587,7 +605,7 @@ These meetings serve as a platform for the software team to discuss and evaluate
 
 Once evaluated, developers propose tasks for the upcoming week, informing their colleagues and the product owner about their intended tasks. For each prospective task, the importance, priority, and necessity are discussed and negotiated.
 
-Although not explicitly defined as such, these meetings bear a resemblance to the sprint-scrum style of agile development, contributing to an agile-like methodology for our project.
+Although our development processes largely follow a traditional route, the recent introducution of these weekly software meetings bear a resemblance to the sprint-scrum style of agile development, contributing to agile-like elements for our project management.
 
 <!-- 
 Script: 
@@ -605,8 +623,6 @@ Script:
 For a more comprehensive understanding of the project and the justifications for its development, please refer to the Proposal document:
 
 [<img src="resources/images/microsoft/Word.png" width="35px"> Project Proposal Document][proposal-doc-link]
-
-<!-- [<img src="resources/images/microsoft/Word.png" width="35px"> Project Design Document][design-doc-link] -->
 
 <!-- 
 Script: 
@@ -776,7 +792,9 @@ Script:
 
 ## Development Platform
 
-ToDo
+- Long before the current era of developing for `Windows`, Tascomp utilised an ancient technology knows as `OS9`, this was a real-time operating system.
+- Eventually, once Windows had become more stable, Tascomp migrated its `C` codebase to be developed for the platform.
+- Tascomp's code-base for `Prodigy`, its derived variants, and Tascomp's orbiting components, such as `Support Tracker`, are all developed for the Windows platform, targeting Windows 10 and 11.
 
 <!-- 
 Script: 
@@ -791,7 +809,11 @@ Script:
 
 ## Languages and Frameworks
 
-ToDo
+- At our code-base's heart is `C`, forming the backbone of our libraries, programs, and essential services.
+- Our `C++` layer has expansive reach, originating with `Win32` back-end and over time moving to `MFC` for both back-end and front-end.
+- `C++/CLI`'s merger with `Windows Forms` marks our tech evolution, drawing on `.NET Framework 4` to redefine our front-end prowess and library offerings.
+- `Support Tracker` embodies adaptability, centring on `C++/CLI`, but based in `MFC` to synergise with specific Tascomp libraries.
+- Navigating the legacy tapestry and tooling constraints, notably utilising a long deprecated source control solution as well as having to cater for `Visual Studio Platform v100`, necessitates that we cannot use anything later than `.NET Framework 4`.
 
 <!-- 
 Script: 
@@ -806,7 +828,15 @@ Script:
 
 ## Source Control
 
-ToDo
+- We employ `Microsoft Visual SourceSafe 6` as our primary version control system, utilising its centralised source-control solution, though bypassing its branching capabilities.
+- Virtualisation aids our process; each major product version, with an example being Prodigy version 11, resides in its dedicated virtual machine, like Build Machine 11's SourceSafe database.
+- To navigate builds and variants, we interweave batch scripts and our proprietary solutions, enabling streamlined management of build types, including Beta and Release.
+
+<div class="smaller-text">
+
+> It is important to note that utilising Sourcesafe as our source-control solution blocks us from using any visual studio platform later than `v142` and so blocks us from using any version of .NET later than `.NET Framework v4.8`. Git would be the most logical next-step in the future.
+
+</div>
 
 <!-- 
 Script: 
@@ -821,7 +851,10 @@ Script:
 
 ## Databases
 
-ToDo
+- Tascomp's core products stand on the foundation of our unique, internal proprietary database technologies. These are largely hidden as to users and managed by back-end components which communicate with fron-end components.
+- Our product layers extend support to three primary databases: `Microsoft Access`, `Microsoft SQL Server`, and `Oracle`.
+- Historically, `Microsoft Access` was our preferred choice, but recent inclinations lean heavily towards `Microsoft SQL Server`.
+- All internal tools, once rooted in `Microsoft Access`, have transitioned to `Microsoft SQL Server`, consolidating in the shared server `TSC-Server`, the same repository designated for the Support Tracker's database.
 
 <!-- 
 Script: 
@@ -832,22 +865,139 @@ Script:
 
 ---
 
-<!-- Slides[5.5] Development Enviroments -->
+<!-- Slides[5.5] Development Environments -->
 
-## Development Enviroments
+## Development Environments
 
-ToDo
+- `Visual Studio 2010` is the primary IDE across Tascomp's software division. However, certain developers, including myself, and all our build machines are equipped with `Visual Studio 2019` to tap into platform `v142` and `.NET Framework v4.8` capabilities.
+- Our internal toolkit is vast and varied. From handling our exclusive domain language `SLANG` to meticulous program, queue, and data-module diagnostics, these tools embody diverse roles, ensuring an optimised development environment.
+- Personally, an array of Microsoft utilities, like `Visual Studio Code`, `Windows Terminal`, `WSL2`, and `SysInternal Suite`, are indispensable, aiding in a streamlined development experience.
 
 <!-- 
 Script: 
- - Tell them about the development enviroments.
+ - Tell them about the development environments.
  - Wait a second
  - Move to next slide
  -->
 
 ---
 
-<!-- Slides[6} Testing  -->
+<!-- Slides[6} Development Conventions, Standards, and Styles -->
+
+![bg height:250px](<resources/slides/titles/Coding Standards.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[6.1] Standards Overview -->
+
+## Standards Overview
+
+Due to us heavily relying on Microsoft technologies for our Windows-based C++ applications. We use Microsoft's style guide for each respective technology in our project.
+
+<div style="width:30%" class="columns3">
+
+  <div>
+
+  ![height:50px](resources/images/icons/c.png)
+
+  </div>
+  
+  <div>
+
+  ![height:50px](resources/images/icons/c++.png)
+
+  </div>
+
+  <div>
+
+  ![height:50px](resources/images/icons/Windows.png)
+
+  </div>
+
+</div>
+
+<!-- 
+Script: 
+ - Provide an overview of the programming standards.
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[6.2] C++ with Win32 and MFC -->
+
+## C++ with Win32 and MFC
+
+- Hungarian Notation Naming Conventions
+- Function and Class Commenting
+- Bracing (Which Line?)
+- Exception and Error Handling
+- Function and Class Coherence
+- Guard Statements
+
+[Official Microsoft Documentation](https://learn.microsoft.com/en-us/windows/win32/stg/coding-style-conventions)
+
+<!-- 
+Script: 
+ - ToDo.
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[6.3] C++/CLI -->
+
+## C++/CLi
+
+- Name Casing
+- Descriptive Naming
+- Function and Class Commenting
+- Bracing (New Line)
+- Exception and Error Handling
+- Function and Class Coherence
+- Guard Statements
+- Nesting
+
+[Official Microsoft Documentation](https://learn.microsoft.com/en-us/cpp/dotnet/dotnet-programming-with-cpp-cli-visual-cpp?view=msvc-170#see-also)
+
+<!-- 
+Script: 
+ - ToDo.
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[6.4] Modifying Existing Projects -->
+
+## Modifying Existing Projects
+
+Mirroring the existing styles when modifying a project refers to maintaining the same coding conventions, formatting, and naming conventions that have already been established in an existing project when making modifications or adding new code. By mirroring the existing styles, the modified code seamlessly integrates with the rest of the project and maintains a consistent and unified codebase.
+
+- Coding Conventions
+- Formatting
+- Commenting
+- File organisation
+
+<!-- 
+Script: 
+ - ToDo.
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[7} Testing  -->
 
 ![bg height:250px](<resources/slides/titles/Testing.svg>)
 
@@ -859,7 +1009,7 @@ Script:
 
 ---
 
-<!-- Slides[6.1] Project Testing -->
+<!-- Slides[7.1] Project Testing -->
 
 ## Project Testing
 
@@ -880,7 +1030,7 @@ Script:
 
 ---
 
-<!-- Slides[6.2] Testing Document Reference -->
+<!-- Slides[7.2] Testing Document Reference -->
 
 ## Acceptance Testing Document
 
@@ -899,7 +1049,7 @@ Script:
 
 ---
 
-<!-- Slides[6.3] Further testing through Unit Tests -->
+<!-- Slides[7.3] Further testing through Unit Tests -->
 
 ## Further testing through Unit Tests
 
@@ -926,7 +1076,6 @@ Script:
 
 </div>
 
-
 <!-- 
 Script: 
  - Tell them about the the unit test example.
@@ -936,21 +1085,9 @@ Script:
 
 ---
 
-<!-- Slides[7} Deployment  -->
+<!-- Slides[8} Deployment  -->
 
-![bg height:250px](<resources/slides/titles/Testing.svg>)
-
-<!-- 
-Script: 
- - Wait a second
- - Move to next slide
- -->
-
----
-
-<!-- Slides[8} User Guide-->
-
-![bg height:250px](<resources/slides/titles/Testing.svg>)
+![bg height:250px](<resources/slides/titles/Deployment.svg>)
 
 <!-- 
 Script: 
@@ -960,7 +1097,54 @@ Script:
 
 ---
 
-<!-- Slides[9} Design  -->
+<!-- Slides[8.1} Steps  -->
+
+# Where does it go?
+
+Given that the development process previously mentioned has taken place, and a final release candidate has been built on the appropriate virtual machine, the `Support Tracker` front-end executable/s and back-end dynamic-link-libraries will be manually moved to the appropriate location on the `TSC-SERVER` and a shortcut will be added to the `Tascomp Shortcuts` directory on the main internal server.
+
+If this system were a component within Tascomp's `Prodigy` or derived products, then it would automatically be included in the relevant installer and no manual actions would be required.
+
+<!-- 
+Script: 
+ - Just say what is on the slide
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[9} User Guide -->
+
+![bg height:250px](<resources/slides/titles/User Guide.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[9.1} User Guide Reference -->
+
+## User Guide Reference
+
+As per Tascomp's development process, a user guide document must be created for the application/s.
+
+For a greater understanding of how a user would interface with the front-end components fo the project, please refer to the User Guide document:
+
+[<img src="resources/images/microsoft/Word.png" width="35px"> User Guide Document][user-guide-link]
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[10} Design  -->
 
 ![bg height:250px](<resources/slides/titles/Design.svg>)
 
@@ -972,7 +1156,27 @@ Script:
 
 ---
 
-<!-- Slides[x} Architecture  -->
+<!-- Slides[10.1} Design Overview  -->
+
+# Design Overview
+
+The following slides describe the overall systems design using:
+
+- Architecture
+- Class Diagrams
+- Entity Relationship Diagram
+- Database Schema
+
+<!-- 
+Script: 
+ - Provide an overview
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11} Architecture  -->
 
 ![bg height:250px](<resources/slides/titles/Architecture.svg>)
 
@@ -983,3 +1187,660 @@ Script:
  -->
 
 ---
+
+<!-- Slides[11.1} C4 Model Overview  -->
+
+# C4 Model Overview
+
+- C4, encapsulating **Context**, **Containers**, **Components**, and **Code**, is a tailored blueprint for elucidating software architecture.
+- Through its quad-tiered design, it shifts from a panoramic system overview to the minutiae of code constructs.
+- This stratified schematic allows stakeholders to oscillate between the system's macroscopic function and its detailed operations effortlessly.
+- When harnessed for charting out project architecture, C4 stands as a beacon of lucidity, harmonising interpretations, and smoothing dialogues.
+
+<!-- 
+Script: 
+ - Provide an overview
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.2} Context Model -->
+
+## C1 | Context Model
+
+<div style="width:75%;">
+
+  ![Context Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/ARCHIT~1/c1/SUPPOR~1.PNG)
+
+</div>
+
+<!-- 
+Script: 
+ - Describe the context model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.3} Container Model -->
+
+## C2 | Container Model
+
+<div style="width:60%;">
+
+  ![Container Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/ARCHIT~1/c2/SUPPOR~1.PNG)
+
+</div>
+
+<!-- 
+Script: 
+ - Describe the container model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.4} Component Model : Storage Layer -->
+
+## C3 | Component Model : Storage Layer
+
+<div style="width:85%;">
+
+  ![Storage Layer Component Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/ARCHIT~1/C3STOR~1/TSC-SE~1.PNG)
+
+</div>
+
+<!-- 
+Script: 
+ - Describe the data access layer component model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.5} Component Model : Data Access Layer -->
+
+## C3 | Component Model : Data Access Layer
+
+<div style="width:85%;">
+
+  ![Data Access Layer Component Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/ARCHIT~1/C3DATA~1/SUPPOR~1.PNG)
+
+</div>
+
+<!-- 
+Script: 
+ - Describe the data access layer component model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.6} Component Model : Domain -->
+
+## C3 | Component Model : Domain
+
+<div style="width:90%;">
+
+  ![Domain Component Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/ARCHIT~1/C3DOMA~1/SUPPOR~1.PNG)
+
+</div>
+
+<!-- 
+Script: 
+ - Describe the domain component model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.7} Component Model : (View Layer) User Interface Components -->
+
+## C3 | Component Model : View Layer
+
+<div style="width:60%;">
+
+  ![User Interface Component Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/ARCHIT~1/C3UICO~1/SUPPOR~1.PNG)
+
+</div>
+
+<!-- 
+Script: 
+ - Describe the user interface components component model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.8} Code Model : User Interface Class Diagram -->
+
+## C4 | Code Model : View Layer
+
+![bg right 95% User Interface Class Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/code/views/views/SUPPOR~1.PNG)
+
+<!-- 
+Script: 
+ - Describe the user interface components class model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.9} Code Model : User Interface Tickets View Class Diagram -->
+
+## C4 | Code Model : View Layer : Tickets View
+
+![bg right 95% Tickets View Class Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/code/views/TICKET~2/SUPPOR~1.PNG)
+
+
+<!-- 
+Script: 
+ - Describe the user interface tickets view class model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.10} Code Model : User Interface Ticket View Class Diagram -->
+
+## C4 | Code Model : View Layer : Ticket View
+
+![bg right 95% Ticket View Class Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/code/views/TICKET~1/SUPPOR~1.PNG)
+
+<!-- 
+Script: 
+ - Describe the user interface ticket view class model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.11} Code Model : User Interface Event View Class Diagram -->
+
+## C4 | Code Model : View Layer : Event View
+
+![bg right 75% Event View Class Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/code/views/EVENTV~1/SUPPOR~1.PNG)
+
+<!-- 
+Script: 
+ - Describe the user interface event view class model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.12} Code Model : Domain Class Diagram -->
+
+## C4 | Code Model : Domain
+
+<div style="width:80%;">
+
+![Domain Class Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/code/domain/SUPPOR~1.PNG)
+
+</div>
+
+<!-- 
+Script: 
+ - Describe the domain class model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.13} Code Model : Data Access Layer Class Diagram -->
+
+## C4 | Code Model : Data Access Layer
+
+<div class="columns">
+  <div style="width:500px">
+
+  The Data Access Layer is made up of 3 component classes:
+
+  - UI Contract
+  - Database Interaction
+  - Domain Data Mapper
+
+  </div>
+  <div style="width:500px">
+
+  ![Data Access layer](<resources/images/snips/Data Access Layer.png>)
+
+  </div>
+</div>
+
+
+<!-- ![bg right](<https://cdn.svgator.com/images/2022/01/404-svg-animation.svg>) -->
+
+<!-- 
+Script: 
+ - Describe the data access layer class model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.14} Code Model : Database Entity Relationship Diagram -->
+
+## C4 | Code Model : Storage Layer : Entity Relationships
+
+![bg right 95% Entity Relationships Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/database/erd/SUPPOR~1.PNG)
+
+<!-- 
+Script: 
+ - Describe the storage layer entity relationship model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.15} Code Model : Database Base Entity Schema Diagram -->
+
+## C4 | Code Model : Storage Layer : Base Entities Schema
+
+![bg right 95% Base Table Entities Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/database/schema/BASETA~1/SUPPOR~1.PNG)
+
+<!-- 
+Script: 
+ - Describe the storage layer base entity schema model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.16} Code Model : Database Base Entity Schema Diagram -->
+
+## C4 | Code Model : Storage Layer : Junction Entities Schema
+
+![bg right 95% Junction Table Entities Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/database/schema/JUNCTI~1/SUPPOR~1.PNG)
+
+<!-- 
+Script: 
+ - Describe the storage layer junction entity schema model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[11.17} Code Model : Database Base Entity Schema Diagram -->
+
+## C4 | Code Model : Storage Layer : Lookup Entities Schema
+
+![bg right 95% Lookup Table Entities Diagram](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/database/schema/LOOKUP~1/SUPPOR~1.PNG)
+
+<!-- 
+Script: 
+ - Describe the storage layer lookup entity schema model
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[12} Code  -->
+
+![bg height:250px](<resources/slides/titles/Code.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[12.1} Code Overview -->
+
+## Code Overview
+
+<div class="columns">
+<div style="width:700px">
+
+  As of writing this presentation, actual development has yet to commence and the design has yet to be reviewed and signed off.
+
+  Due to this, the following code snippets are header `declaration` files from the current project's skeleton.
+
+</div>
+<div style="margin-left:200px;width:400px;float:right;">
+
+<div class = "rounded_image">
+
+![Furious Typing](resources/images/memes/Typing.gif)
+
+</div>
+
+</div>
+
+</div>
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[12.2} Code Snippet -->
+
+## Entity Base Class
+
+The is the header declaration for the Entity Base Class
+
+![bg right 95%](<resources/images/code examples/Entity.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[12.3} Code Snippet -->
+
+## Ticket Class
+
+The is the header declaration for the Ticket Class
+
+![bg right 95%](<resources/images/code examples/ticket.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[12.4} Code Snippet -->
+
+## Ticket Details Struct
+
+The is the header declaration for the Ticket Details Struct
+
+![bg right 80%](<resources/images/code examples/ticket details.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[12.5} Code Snippet -->
+
+## Event Class
+
+The is the header declaration for the Event Class
+
+![bg right 95%](<resources/images/code examples/Event.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[12.6} Code Snippet -->
+
+## Event Details Struct
+
+The is the header declaration for the Event Details Struct
+
+![bg right 95%](<resources/images/code examples/event details.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[12.7} Code Snippet -->
+
+## Linked File Class
+
+The is the header declaration for the Linked File Class
+
+![bg right 95%](<resources/images/code examples/Linked File.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[12.8} Code Snippet -->
+
+## Linked Mantis Reference Class
+
+The is the header declaration for the Linked Mantis Reference Class
+
+![bg right 95%](<resources/images/code examples/Linked Mantis Reference.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[12.9} Code Snippet -->
+
+## Audit Action Class
+
+The is the header declaration for the Audit Action Class
+
+![bg right 95%](<resources/images/code examples/Audit Action.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[13} User Interface  -->
+
+![bg height:250px](<resources/slides/titles/User Interface.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[13.1} User Interface  -->
+
+## User Interface
+
+The following slides are wireframes for the proposed tool prototype as described in the previous user-interface diagrams.
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[13.2} User Interface  -->
+
+## Tickets View
+
+This is the wireframe for the proposed tickets view *(displaying multiple tickets)*.
+
+The tickets view is composed of a filtering section, and the list of tickets relative to the applied filtering.
+
+![bg right 95%](<resources/images/wireframes/Exports/Tickets View.png>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[13.3} User Interface  -->
+
+## Ticket View
+
+This is the wireframe for the proposed ticket view.
+
+The ticket view is composed of a section for displaying the ticket's details, the list of ticket's events, and the linked files and mantis entries.
+
+![bg right 95%](<resources/images/wireframes/Exports/Ticket View.png>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[13.4} User Interface  -->
+
+## Event View
+
+This is the wireframe for the proposed event view, within a ticket.
+
+The event view displays the event's details.
+
+![bg right 95%](<resources/images/wireframes/Exports/Event View.png>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[14} Future Scope  -->
+
+![bg height:250px](<resources/slides/titles/Future Scope.svg>)
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[14.1} Future Scope  -->
+
+## Future Scope
+
+Having developed the proposed solution for Support Tracker, the future scope may include:
+
+- Alternative front-end solutions
+- Introducing back-end components for handling notifications
+- Integration with the existing Support Manager
+- Extraction of data on to a live office display
+- "AI" analysis of existing data
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[14.2} Future Scope : Context -->
+
+## Future Scope : Context Model
+
+Introduces alternative front-end solutions and back-end components.
+
+<div style="width:60%;">
+
+  ![Future Scope Context](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/ARCHIT~1/FUTURE~1/c1/SUPPOR~1.PNG)
+
+</div>
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[14.3} Future Scope : Container  -->
+
+## Future Scope : Container Model
+
+Introduces alternative front-end solutions and back-end components.
+
+<div style="width:50%;">
+
+  ![Future Scope Container](../../../../../../../../../PERSON~1/UNIVER~1/ASSESS~1/YEAR1~1/MODULE~4/DOCUME~1/PROJEC~1/UNIVER~1/slides/RESOUR~1/images/diagrams/ARCHIT~1/FUTURE~1/c2/SUPPOR~1.PNG)
+
+</div>
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
+
+---
+
+<!-- Slides[15} Conclusion  -->
+
+<div class="rows">
+
+  <div style="width:500px">
+
+  ![bg height:250px](<resources/slides/titles/Conclusion.svg>)
+
+  </div>
+
+  <div style="width:500px"> 
+  
+  <br>
+  <br>
+  <br>
+
+  # Any Questions?
+  
+  </div>
+</div>
+
+
+<!-- 
+Script: 
+ - Wait a second
+ - Move to next slide
+ -->
